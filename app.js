@@ -8,3 +8,5 @@ telegram.discardUnreadMessages();
 telegram.onMessage(function(message){
 	regexAns.process(message);
 })
+
+console.log('NerdBot started')
