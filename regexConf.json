@@ -2,7 +2,7 @@
     "answers": [
         {
             "regex": "^\\*sei[td]$",
-            "answer": "http://www.seidseit.de/"
+            "answer": "seidseit.de",
             "flag": "i"
         }
     ]
