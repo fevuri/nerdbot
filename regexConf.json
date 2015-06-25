@@ -1,0 +1,8 @@
+{
+    "answers": [
+        {
+            "regex": "^\\*sei[td]$",
+            "answer": "http://www.seidseit.de/"
+        }
+    ]
+}

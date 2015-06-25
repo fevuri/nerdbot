@@ -1,0 +1,9 @@
+{
+  "name": "NerdBot",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "request": "^2.58.0"
+  },
+  "devDependencies": {},
+}
