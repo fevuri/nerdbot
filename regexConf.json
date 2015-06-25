@@ -3,6 +3,7 @@
         {
             "regex": "^\\*sei[td]$",
             "answer": "http://www.seidseit.de/"
+            "flag": "i"
         }
     ]
 }
