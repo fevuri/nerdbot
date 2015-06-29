@@ -3,9 +3,25 @@ var request = require('request');
 var token = false;
 var highestId = false;
 
-exports.setToken = function(t){
-	token = t;
-};
+// Initialize the telegram api (discard messages if wanted) and call the callback after it is finished
+exports.init = function(newToken, discardUnreadMessages, callback){
+	token = newToken;
+
+	// Discard messages by calling get updates twice in a row
+	// at the first call 'highestId' will be set
+	// at the second call the 'getUpdate' Api call will mark all previous messages as read
+	// the second time is currently not necessary but will allow a smoother implementaion of the webhook
+	if(discardUnreadMessages){
+		getUpdates(null, function(){
+			getUpdates(null, function(){
+				callback();
+			});
+		});
+	}else{
+		callback();
+	}
+}
+
 
 // Make basic telegram api calls
 // Call is a object containing a string 'method' and other named strings as parameters
@@ -19,9 +35,8 @@ exports.api = function(call, callback){
 		if (!error && response.statusCode == 200) {
 			apiResponseObj = JSON.parse(body);
 			if(apiResponseObj.ok){
-				if (typeof callback == 'function'){
+				if (typeof callback == 'function')
 					callback(apiResponseObj.result);
-				}
 			}else{
 				console.log('API Error:');
 				console.log(apiResponseObj.description);
@@ -32,7 +47,7 @@ exports.api = function(call, callback){
 	});
 };
 
-getUpdates = function(callback){
+getUpdates = function(callback1, callback2){
 	var request = {method: 'getUpdates'};
 	if(highestId){
 		request.offset = highestId + 1;
@@ -42,20 +57,18 @@ getUpdates = function(callback){
 			if(highestId < update.update_id){
 				highestId = update.update_id
 			}
-			callback(update.message);
+			if (typeof callback1 == 'function')
+				callback1(update.message);
 		});
+		if (typeof callback2 == 'function')
+			callback2();
 	});
 }
 
 // Calls the callback funtion everytime a new message is received
 // TODO: Optimize by implementing the Webhook if supported by the environment
 exports.onMessage = function(callback){
-	setInterval(function(){getUpdates(callback)}, 1000);
-}
-
-// Litte helper function that calls getUpdates with and empty callback twice
-// in order not to react on messages that were sent before the bot is started
-exports.discardUnreadMessages = function(){
-	getUpdates(function(){});
-	getUpdates(function(){});
+	setInterval(function(){
+		getUpdates(callback);
+	}, 1000);
 }
