@@ -3,9 +3,9 @@ var regexAns = require('./regexAnswers.js');
 
 var config = require('./config.json');
 
-telegram.init(config.token, true, function(){
-	telegram.onMessage(function(message){
-		regexAns.process(message);
+telegram.init(config.nerdbot.token, true, function(bot){
+	bot.onMessage(function(message){
+		regexAns.process(bot, message);
 	})
 	console.log('NerdBot started')
 });

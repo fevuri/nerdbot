@@ -8,11 +8,11 @@ conf.answers.forEach(function(answer){
 	answer.regexObj = regexp = new RegExp(answer.regex, answer.flag);
 });
 
-// Check if a message matches a regex and reply if it does 
-exports.process = function(message){
+// Check if a message matches a regex and reply if it does
+exports.process = function(bot, message){
 	async.each(conf.answers, function(answer, callback){
 		if(answer.regexObj.test(message.text)){
-			telegram.api({
+			bot.api({
 				method: 'sendMessage',
 				chat_id: message.chat.id,
 				text: answer.answer
