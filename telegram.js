@@ -2,7 +2,7 @@ var request = require('request');
 
 // Initialize the telegram api (discard messages if wanted) and call the callback after it is finished
 exports.init = function(token, discardUnreadMessages, callback){
-	bot = new Bot(token);
+	var bot = new Bot(token);
 
 	// Discard messages by calling get updates twice in a row
 	// at the first call 'highestId' will be set

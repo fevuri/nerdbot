@@ -1,6 +1,5 @@
 var async = require('async');
 
-var telegram = require('./telegram.js');
 var conf = require('./regexConf.json');
 
 // Create the RegExp objects for all the regular expressions
