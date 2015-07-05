@@ -1,4 +1,4 @@
-require('console-stamp')(console, 'HH:MM:ss.l');
+require('console-stamp')(console, 'yyyy-mm-dd HH:MM:ss.l');
 
 var async = require('async');
 
@@ -24,12 +24,12 @@ async.each(config.bots, function(botConfig){
 		},
 		// When the initialization of the modules is finished, set an onMessage function
 		function(){
-			bot.on('message', function(message){
+			bot.on('message', function(msg){
+				console.info("Message: " + msg.from.first_name + ": " + msg.text);
 				// If a message is received, pass it to all activeated modules
-				console.log(message)
 				async.each(bot.config.activeModules, function(moduleName){
 					if(typeof modules[moduleName].process == 'function'){
-						modules[moduleName].process(bot, message);
+						modules[moduleName].process(bot, msg);
 					}
 				});
 			})
