@@ -1,9 +1,9 @@
 var async = require('async');
 
-var telegram = require('./telegram.js');
+var telegram = require('./lib/telegram.js');
 var modules = {
-	regexAnswers: require('./regexAnswers.js'),
-	noSpam: require('./noSpam.js'),
+	regexAnswers: require('./lib/regexAnswers.js'),
+	noSpam: require('./lib/noSpam.js'),
 };
 
 var apikeys = require('./apikeys.json');

@@ -2,7 +2,7 @@
   "name": "NerdBot",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "dependencies": {
     "async": "^1.2.1",
     "merge": "^1.2.0",
