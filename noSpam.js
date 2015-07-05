@@ -35,11 +35,16 @@ exports.process = function(bot, message){
 		},
 		// too often the same content
 		function(){
-			if(message.text == lastMessagesInChat.lastText.text){
-				lastMessagesInChat.lastText.count++;
-				if(lastMessagesInChat.lastText.count > noSpam.sameTextLimit) return true;
+			if(message.text){
+				if(message.text == lastMessagesInChat.lastText.text){
+					lastMessagesInChat.lastText.count++;
+					if(lastMessagesInChat.lastText.count > noSpam.sameTextLimit) return true;
+				}else{
+					lastMessagesInChat.lastText.text = message.text;
+					lastMessagesInChat.lastText.count = 1;
+				}
 			}else{
-				lastMessagesInChat.lastText.text = message.text;
+				lastMessagesInChat.lastText.text = "";
 				lastMessagesInChat.lastText.count = 1;
 			}
 			return false;
