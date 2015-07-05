@@ -1,0 +1,21 @@
+{
+    "bots": [
+        {
+            "name": "NerdBot",
+            "discardUnreadMessages": true,
+            "activeModules": [
+                "regexAnswers"
+            ]
+        },
+        {
+            "name": "NoSpamBot",
+            "discardUnreadMessages": true,
+            "activeModules": [
+                "noSpam"
+            ],
+            "noSpam": {
+
+            }
+        }
+    ]
+}

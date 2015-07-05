@@ -1,14 +1,14 @@
 var request = require('request');
 
 // Initialize the telegram api (discard messages if wanted) and call the callback after it is finished
-exports.init = function(token, discardUnreadMessages, callback){
-	var bot = new Bot(token);
+exports.init = function(token, config, callback){
+	var bot = new Bot(token, config);
 
 	// Discard messages by calling get updates twice in a row
 	// at the first call 'highestId' will be set
 	// at the second call the 'getUpdate' Api call will mark all previous messages as read
 	// the second time is currently not necessary but will allow a smoother implementaion of the webhook
-	if(discardUnreadMessages){
+	if(config.discardUnreadMessages){
 		bot.getUpdates(null, function(){
 			bot.getUpdates(null, function(){
 				callback(bot);
@@ -22,8 +22,9 @@ exports.init = function(token, discardUnreadMessages, callback){
 
 // The bot objects (allows two different bots to run at the same time)
 // TODO: Only one timer for all bot objects
-function Bot(token){
+function Bot(token, config){
 	this.token = token;
+	this.config = config;
 	this.highestId = 0;
 
 	// Make basic telegram api calls

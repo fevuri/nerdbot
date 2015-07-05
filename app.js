@@ -1,11 +1,23 @@
-var telegram = require('./telegram.js');
-var regexAns = require('./regexAnswers.js');
+var async = require('async');
 
+var telegram = require('./telegram.js');
+var modules = {
+	regexAnswers: require('./regexAnswers.js'),
+	noSpam: require('./noSpam.js'),
+};
+
+var apikeys = require('./apikeys.json');
 var config = require('./config.json');
 
-telegram.init(config.nerdbot.token, true, function(bot){
-	bot.onMessage(function(message){
-		regexAns.process(bot, message);
-	})
-	console.log('NerdBot started')
+
+async.each(config.bots, function(botConfig, callback){
+	telegram.init(apikeys[botConfig.name], botConfig, function(bot){
+		bot.onMessage(function(message){
+			async.each(bot.config.activeModules, function(moduleName, callback){
+				modules[moduleName].process(bot, message);
+			});
+		})
+		console.log(bot.config.name + ' started')
+	});
+	callback();
 });
