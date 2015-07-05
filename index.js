@@ -1,3 +1,5 @@
+require('console-stamp')(console, 'HH:MM:ss.l');
+
 var async = require('async');
 
 var telegram = require('./lib/telegram.js');
@@ -24,6 +26,7 @@ async.each(config.bots, function(botConfig){
 		function(){
 			bot.on('message', function(message){
 				// If a message is received, pass it to all activeated modules
+				console.log(message)
 				async.each(bot.config.activeModules, function(moduleName){
 					if(typeof modules[moduleName].process == 'function'){
 						modules[moduleName].process(bot, message);

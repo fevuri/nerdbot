@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "async": "^1.2.1",
+    "console-stamp": "^0.1.6",
     "merge": "^1.2.0",
     "request": "^2.58.0"
   },
