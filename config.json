@@ -27,7 +27,7 @@
             ],
             "noSpam": {
                 "minuteLimit": 3,
-                "sameTextLimit": 2,
+                "sameTextLimit": 1,
                 "reply": "Kein Spam, bitte"
             }
         }
