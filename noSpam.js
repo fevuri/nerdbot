@@ -4,14 +4,16 @@ exports.init = function(bot, done){
 };
 
 exports.process = function(bot, message){
-	var noSpam = bot.config.noSpam;
-	if(!noSpam.lastMessages){
-		noSpam.lastMessages = {};
+	var noSpam = bot.config.noSpam; // helper variable
+	// create the lastMessages and ChatHistory objects for the chat if they dont exist
+	if(!noSpam.lastMessages) noSpam.lastMessages = {};
+	if(!noSpam.lastMessages[message.chat.id]) noSpam.lastMessages[message.chat.id] = new ChatHistory();
+	function ChatHistory(){
+		this.timestamps = [];
 	}
-	if(!noSpam.lastMessages[message.chat.id]){
-		noSpam.lastMessages[message.chat.id] = new ChatHistory();
-	}
-	var lastMessagesInChat = noSpam.lastMessages[message.chat.id];
+	var lastMessagesInChat = noSpam.lastMessages[message.chat.id]; // helper variable
+
+	// answer if there are to many replys in a minute
 	if(noSpam.minuteLimit){
 		var now = new Date();
 		lastMessagesInChat.timestamps.push(now);
@@ -26,8 +28,5 @@ exports.process = function(bot, message){
 			});
 		}
 	}
+	//TODO limit messages with same text, maybe some kind of asyc implementation
 };
-
-function ChatHistory(){
-	this.timestamps = [];
-}
