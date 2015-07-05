@@ -1,15 +1,16 @@
 var async = require('async');
 
-var conf = require('./regexConf.json');
-
 // Create the RegExp objects for all the regular expressions
-conf.answers.forEach(function(answer){
-	answer.regexObj = regexp = new RegExp(answer.regex, answer.flag);
-});
+exports.init = function(bot, done) {
+	async.each(bot.config.regexAnswers, function(answer, done){
+		answer.regexObj = regexp = new RegExp(answer.regex, answer.flag);
+		done();
+	}, done);
+}
 
 // Check if a message matches a regex and reply if it does
 exports.process = function(bot, message){
-	async.each(conf.answers, function(answer, callback){
+	async.each(bot.config.regexAnswers, function(answer){
 		if(answer.regexObj.test(message.text)){
 			bot.api({
 				method: 'sendMessage',
@@ -17,6 +18,5 @@ exports.process = function(bot, message){
 				text: answer.answer
 			});
 		}
-		callback();
 	});
 };

@@ -10,14 +10,21 @@ var apikeys = require('./apikeys.json');
 var config = require('./config.json');
 
 
-async.each(config.bots, function(botConfig, callback){
+async.each(config.bots, function(botConfig){
 	telegram.init(apikeys[botConfig.name], botConfig, function(bot){
-		bot.onMessage(function(message){
-			async.each(bot.config.activeModules, function(moduleName, callback){
-				modules[moduleName].process(bot, message);
-			});
-		})
-		console.log(bot.config.name + ' started')
+		async.each(bot.config.activeModules, function(moduleName, done){
+			if(typeof modules[moduleName].init == 'function'){
+				modules[moduleName].init(bot, done);
+			}else{
+				done();
+			}
+		}, function(){
+			bot.onMessage(function(message){
+				async.each(bot.config.activeModules, function(moduleName){
+					modules[moduleName].process(bot, message);
+				});
+			})
+			console.log(bot.config.name + ' started')
+		});
 	});
-	callback();
 });
