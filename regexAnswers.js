@@ -12,11 +12,7 @@ exports.init = function(bot, done) {
 exports.process = function(bot, message){
 	async.each(bot.config.regexAnswers, function(answer){
 		if(answer.regexObj.test(message.text)){
-			bot.api({
-				method: 'sendMessage',
-				chat_id: message.chat.id,
-				text: answer.answer
-			});
+			bot.sendMessage(message.chat.id, answer.answer);
 		}
 	});
 };

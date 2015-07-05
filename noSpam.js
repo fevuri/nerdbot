@@ -53,11 +53,7 @@ exports.process = function(bot, message){
 		function(reuslt){
 			// answer if one of the spam filters are true
 			if(reuslt){
-				bot.api({
-					method: 'sendMessage',
-					chat_id: message.chat.id,
-					text: noSpam.reply
-				});
+				bot.sendMessage(message.chat.id, noSpam.reply);
 			}
 		}
 	);
