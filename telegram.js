@@ -39,8 +39,9 @@ function Bot(token, config){
 			if (!error && response.statusCode == 200) {
 				apiResponseObj = JSON.parse(body);
 				if(apiResponseObj.ok){
-					if (typeof callback == 'function')
+					if(typeof callback == 'function'){
 						callback(apiResponseObj.result);
+					}
 				}else{
 					console.log('API Error:');
 					console.log(apiResponseObj.description);
@@ -63,11 +64,13 @@ function Bot(token, config){
 				if(_this.highestId < update.update_id){
 					_this.highestId = update.update_id;
 				}
-				if (typeof callback1 == 'function')
+				if(typeof callback1 == 'function'){
 					callback1(update.message);
+				}
 			});
-			if (typeof callback2 == 'function')
+			if(typeof callback2 == 'function'){
 				callback2();
+			}
 		});
 	}
 

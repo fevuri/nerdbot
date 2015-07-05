@@ -21,7 +21,9 @@ async.each(config.bots, function(botConfig){
 		}, function(){
 			bot.onMessage(function(message){
 				async.each(bot.config.activeModules, function(moduleName){
-					modules[moduleName].process(bot, message);
+					if(typeof modules[moduleName].process == 'function'){
+						modules[moduleName].process(bot, message);
+					}
 				});
 			})
 			console.log(bot.config.name + ' started')
