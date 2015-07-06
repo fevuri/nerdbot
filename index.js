@@ -6,6 +6,7 @@ var telegram = require('./lib/telegram.js');
 var modules = {
 	regexAnswers: require('./lib/regexAnswers.js'),
 	noSpam: require('./lib/noSpam.js'),
+	forwarder: require('./lib/forwarder.js')
 };
 
 var apikeys = require('./apikeys.json');

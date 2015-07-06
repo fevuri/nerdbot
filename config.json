@@ -4,6 +4,7 @@
             "name": "NerdBot",
             "discardUnreadMessages": true,
             "activeModules": [
+                "forwarder",
                 "regexAnswers",
                 "noSpam"
             ],
@@ -22,18 +23,25 @@
             "noSpam": {
                 "sameTextLimit": 2,
                 "reply": "Halt die Fresse, faggit"
+            },
+            "forwarder": {
+                "forwardTo": 15907933
             }
         },
         {
             "name": "NoSpamBot",
             "discardUnreadMessages": true,
             "activeModules": [
+                "forwarder",
                 "noSpam"
             ],
             "noSpam": {
                 "minuteLimit": 3,
                 "sameTextLimit": 1,
                 "reply": "Kein Spam, bitte"
+            },
+            "forwarder": {
+                "forwardTo": 15907933
             }
         }
     ]
