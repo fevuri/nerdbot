@@ -28,7 +28,6 @@ async.each(config.bots, function(botConfig){
 			bot.getMe(function(me){ // Set the bot.config.me object via getMe
 				bot.config.me = me;
 				bot.on('message', function(msg){
-					console.info("Message: " + msg.from.first_name + ": " + msg.text);
 					// If a message is received, pass it to all activeated modules
 					async.each(bot.config.activeModules, function(moduleName){
 						if(typeof modules[moduleName].process == 'function'){
