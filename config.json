@@ -27,6 +27,7 @@
             ],
             "noSpam": {
                 "sameTextLimit": 2,
+                "publicReply": true,
                 "reply": "Halt die Fresse, faggit"
             },
             "forwarder": {
@@ -43,6 +44,7 @@
             "noSpam": {
                 "minuteLimit": 3,
                 "sameTextLimit": 1,
+                "publicReply": false,
                 "reply": "Kein Spam, bitte"
             },
             "forwarder": {
