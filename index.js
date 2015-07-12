@@ -11,19 +11,21 @@ var config = require('./config.json');
 
 // Load all existing botmodules
 var botmodules = {};
+// read all files from the botmodules folder and loop through them
 fs.readdirSync(path.resolve(__dirname, 'botmodules')).forEach(function(modulefilename){
-	var modulepath = path.resolve(__dirname, 'botmodules', modulefilename);
+	var modulepath = path.resolve(__dirname, 'botmodules', modulefilename); //get the absolute path to the module
 	if(path.extname(modulepath) == '.js'){
-		var modulename = path.basename(modulepath, '.js');
+		var modulename = path.basename(modulepath, '.js'); // get the name of the module (the filename minus '.js')
 		botmodules[modulename] = require(modulepath);
 		console.log("Loaded botmodule " + modulename);
 	}
-	// TODO: handle folder as botmodules
+	// TODO: handle folders as botmodules
 });
 
 // Start the different Bots
 async.each(config.bots, function(botConfig){
 	new telegram(apikeys[botConfig.username], botConfig)
+	// set the on loaded function to initialize the botmodules
 	.on('loaded', function(){
 		var self = this;
 		// Initialize every module of the bot
@@ -34,12 +36,13 @@ async.each(config.bots, function(botConfig){
 				done();
 			}
 		},
-		// When the initialization of the modules is finished, set an onMessage function
+		// When the initialization of the modules is finished, log the start
 		function(){
 			if(self.me.username.toUpperCase() != self.config.username.toUpperCase()) console.info("Warning: Bot has a different username");
 			console.log(self.me.username + ' started');
 		});
 	})
+	// set the on message function to handle incoming messages
 	.on('message', function(msg){
 		var self = this;
 		// If a message is received, pass it to all activeated modules
