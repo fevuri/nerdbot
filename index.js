@@ -23,27 +23,31 @@ fs.readdirSync('botmodules').forEach(function(modulefilename){
 
 // Start the different Bots
 async.each(config.bots, function(botConfig){
-	bot = new telegram(apikeys[botConfig.username], botConfig, function(bot){
+	new telegram(apikeys[botConfig.username], botConfig)
+	.on('loaded', function(){
+		var self = this;
 		// Initialize every module of the bot
-		async.each(Object.keys(bot.config.modules), function(moduleName, done){
+		async.each(Object.keys(this.config.modules), function(moduleName, done){
 			if(typeof botmodules[moduleName].init == 'function'){
-				botmodules[moduleName].init(bot, done);
+				botmodules[moduleName].init(self, done);
 			}else{
 				done();
 			}
 		},
 		// When the initialization of the modules is finished, set an onMessage function
 		function(){
-			if(bot.me.username.toUpperCase() != bot.config.username.toUpperCase()) console.info("Warning: Bot has a different username")
-			bot.on('message', function(msg){
-				// If a message is received, pass it to all activeated modules
-				async.each(Object.keys(bot.config.modules), function(moduleName){
-					if(typeof botmodules[moduleName].process == 'function'){
-						botmodules[moduleName].process(bot, msg);
-					}
-				});
-			})
-			console.log(bot.me.username + ' started');
+			if(self.me.username.toUpperCase() != self.config.username.toUpperCase()) console.info("Warning: Bot has a different username");
+			console.log(self.me.username + ' started');
+		});
+	})
+	.on('message', function(msg){
+		var self = this;
+		console.log(self);
+		// If a message is received, pass it to all activeated modules
+		async.each(Object.keys(this.config.modules), function(moduleName){
+			if(typeof botmodules[moduleName].process == 'function'){
+				botmodules[moduleName].process(self, msg);
+			}
 		});
 	});
 });
