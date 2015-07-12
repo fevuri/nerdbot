@@ -17,7 +17,7 @@ fs.readdirSync(path.resolve(__dirname, 'botmodules')).forEach(function(modulefil
 	if(path.extname(modulepath) == '.js'){
 		var modulename = path.basename(modulepath, '.js'); // get the name of the module (the filename minus '.js')
 		botmodules[modulename] = require(modulepath);
-		console.log("Loaded botmodule " + modulename);
+		console.log(modulename + " loaded");
 	}
 	// TODO: handle folders as botmodules
 });
@@ -38,8 +38,8 @@ async.each(config.bots, function(botConfig){
 		},
 		// When the initialization of the modules is finished, log the start
 		function(){
-			if(self.me.username.toUpperCase() != self.config.username.toUpperCase()) console.info("Warning: Bot has a different username");
-			console.log(self.me.username + ' started');
+			if(self.me.username.toUpperCase() != self.config.username.toUpperCase()) console.info("Warning: %s has a different username ('%s' expected, returned '%s')", self.me.first_name, self.config.username, self.me.username);
+			console.log('%s started', self.me.first_name);
 		});
 	})
 	// set the on message function to handle incoming messages
