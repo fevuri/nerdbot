@@ -16,7 +16,7 @@ var config = require('./config.json');
 async.each(config.bots, function(botConfig){
 	bot = new telegram(apikeys[botConfig.username], botConfig, function(bot){
 		// Initialize every module of the bot
-		async.each(bot.config.activeModules, function(moduleName, done){
+		async.each(Object.keys(bot.config.modules), function(moduleName, done){
 			if(typeof modules[moduleName].init == 'function'){
 				modules[moduleName].init(bot, done);
 			}else{
@@ -28,7 +28,7 @@ async.each(config.bots, function(botConfig){
 			if(bot.me.username.toUpperCase() != bot.config.username.toUpperCase()) console.info("Warning: Bot has a different username")
 			bot.on('message', function(msg){
 				// If a message is received, pass it to all activeated modules
-				async.each(bot.config.activeModules, function(moduleName){
+				async.each(Object.keys(bot.config.modules), function(moduleName){
 					if(typeof modules[moduleName].process == 'function'){
 						modules[moduleName].process(bot, msg);
 					}
