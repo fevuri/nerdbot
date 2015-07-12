@@ -25,19 +25,16 @@ async.each(config.bots, function(botConfig){
 		},
 		// When the initialization of the modules is finished, set an onMessage function
 		function(){
-			bot.getMe(function(me){ // Set the bot.me object via getMe
-				bot.me = me;
-				if(bot.me.username.toUpperCase() != bot.config.username.toUpperCase()) console.info("Warning: Bot has a different username")
-				bot.on('message', function(msg){
-					// If a message is received, pass it to all activeated modules
-					async.each(bot.config.activeModules, function(moduleName){
-						if(typeof modules[moduleName].process == 'function'){
-							modules[moduleName].process(bot, msg);
-						}
-					});
-				})
-				console.log(bot.me.username + ' started');
-			});
+			if(bot.me.username.toUpperCase() != bot.config.username.toUpperCase()) console.info("Warning: Bot has a different username")
+			bot.on('message', function(msg){
+				// If a message is received, pass it to all activeated modules
+				async.each(bot.config.activeModules, function(moduleName){
+					if(typeof modules[moduleName].process == 'function'){
+						modules[moduleName].process(bot, msg);
+					}
+				});
+			})
+			console.log(bot.me.username + ' started');
 		});
 	});
 });
