@@ -38,8 +38,8 @@ async.each(config.bots, function(botConfig){
 		},
 		// When the initialization of the modules is finished, log the start
 		function(){
-			if(self.me.username.toUpperCase() != self.config.username.toUpperCase()) console.info("Warning: %s has a different username ('%s' expected, returned '%s')", self.me.first_name, self.config.username, self.me.username);
-			console.log('%s started', self.me.first_name);
+			if(self.me.username.toUpperCase() != self.config.username.toUpperCase()) console.info("Warning: %s has a different username ('%s' expected, returned '%s')", self.config.username, self.config.username, self.me.username);
+			console.log('%s started', self.config.username);
 		});
 	})
 	// set the on message function to handle incoming messages
