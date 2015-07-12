@@ -11,11 +11,11 @@ var config = require('./config.json');
 
 // Load all existing botmodules
 var botmodules = {};
-fs.readdirSync('botmodules').forEach(function(modulefilename){
-	var modulepath = path.join('botmodules', modulefilename);
+fs.readdirSync(path.resolve(__dirname, 'botmodules')).forEach(function(modulefilename){
+	var modulepath = path.resolve(__dirname, 'botmodules', modulefilename);
 	if(path.extname(modulepath) == '.js'){
 		var modulename = path.basename(modulepath, '.js');
-		botmodules[modulename] = require(path.resolve(modulepath));
+		botmodules[modulename] = require(modulepath);
 		console.log("Loaded botmodule " + modulename);
 	}
 	// TODO: handle folder as botmodules
@@ -28,7 +28,7 @@ async.each(config.bots, function(botConfig){
 		var self = this;
 		// Initialize every module of the bot
 		async.each(Object.keys(this.config.modules), function(moduleName, done){
-			if(typeof botmodules[moduleName].init == 'function'){
+			if(botmodules[moduleName] && typeof botmodules[moduleName].init == 'function'){
 				botmodules[moduleName].init(self, done);
 			}else{
 				done();
@@ -44,7 +44,7 @@ async.each(config.bots, function(botConfig){
 		var self = this;
 		// If a message is received, pass it to all activeated modules
 		async.each(Object.keys(this.config.modules), function(moduleName){
-			if(typeof botmodules[moduleName].process == 'function'){
+			if(botmodules[moduleName] && typeof botmodules[moduleName].process == 'function'){
 				botmodules[moduleName].process(self, msg);
 			}
 		});
