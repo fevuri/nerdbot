@@ -42,7 +42,6 @@ async.each(config.bots, function(botConfig){
 	})
 	.on('message', function(msg){
 		var self = this;
-		console.log(self);
 		// If a message is received, pass it to all activeated modules
 		async.each(Object.keys(this.config.modules), function(moduleName){
 			if(typeof botmodules[moduleName].process == 'function'){
