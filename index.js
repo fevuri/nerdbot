@@ -14,7 +14,7 @@ var config = require('./config.json');
 
 // Start the different Bots
 async.each(config.bots, function(botConfig){
-	bot = new telegram(apikeys[botConfig.name], botConfig, function(bot){
+	bot = new telegram(apikeys[botConfig.username], botConfig, function(bot){
 		// Initialize every module of the bot
 		async.each(bot.config.activeModules, function(moduleName, done){
 			if(typeof modules[moduleName].init == 'function'){
@@ -25,8 +25,9 @@ async.each(config.bots, function(botConfig){
 		},
 		// When the initialization of the modules is finished, set an onMessage function
 		function(){
-			bot.getMe(function(me){ // Set the bot.config.me object via getMe
-				bot.config.me = me;
+			bot.getMe(function(me){ // Set the bot.me object via getMe
+				bot.me = me;
+				if(bot.me.username.toUpperCase() != bot.config.username.toUpperCase()) console.info("Warning: Bot has a different username")
 				bot.on('message', function(msg){
 					// If a message is received, pass it to all activeated modules
 					async.each(bot.config.activeModules, function(moduleName){
@@ -35,7 +36,7 @@ async.each(config.bots, function(botConfig){
 						}
 					});
 				})
-				console.log(bot.config.name + ' started');
+				console.log(bot.me.username + ' started');
 			});
 		});
 	});

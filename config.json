@@ -1,7 +1,7 @@
 {
     "bots": [
         {
-            "name": "NerdBot",
+            "username": "nerobot",
             "discardUnreadMessages": true,
             "activeModules": [
                 "forwarder",
@@ -35,7 +35,7 @@
             }
         },
         {
-            "name": "NoSpamBot",
+            "username": "nospambot",
             "discardUnreadMessages": true,
             "activeModules": [
                 "forwarder",
