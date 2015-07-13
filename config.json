@@ -45,6 +45,13 @@
                     "forwardTo": 15907933
                 }
             }
+        },
+        {
+            "username": "jsonmessagebot",
+            "discardUnreadMessages": true,
+            "modules": {
+                "jsonMessage": true
+            }
         }
     ]
 }
