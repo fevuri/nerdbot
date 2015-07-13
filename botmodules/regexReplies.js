@@ -12,7 +12,7 @@ exports.init = function(bot, done) {
 exports.process = function(bot, message){
 	async.each(bot.config.modules.regexReplies, function(reply){
 		if(reply.regexObj.test(message.text)){
-			bot.sendMessage(message.chat.id, reply.reply);
+			bot.reply(message, reply.reply);
 		}
 	});
 };

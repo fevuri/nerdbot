@@ -48,7 +48,8 @@ exports.process = function(bot, message){
 		function(reuslt){
 			// reply if one of the spam filters are true
 			if(reuslt){
-				bot.sendMessage(noSpam.publicReply ? message.chat.id : message.from.id, noSpam.reply);
+				if(noSpam.publicReply) bot.reply(message, noSpam.reply)
+				else bot.sendMessage(message.from.id, noSpam.reply);
 			}
 		}
 	);
