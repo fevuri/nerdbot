@@ -46,7 +46,7 @@ exports.process = function(bot, message){
 		}],
 		function(func, callback){callback(func())}, // mini function to call the functions of the array and pass their result to callback
 		function(reuslt){
-			// answer if one of the spam filters are true
+			// reply if one of the spam filters are true
 			if(reuslt){
 				bot.sendMessage(noSpam.publicReply ? message.chat.id : message.from.id, noSpam.reply);
 			}
