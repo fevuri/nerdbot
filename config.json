@@ -6,12 +6,12 @@
             "modules": {
                 "regexReplies": [
                     {
-                        "regex": "^\\*sei[td]$",
+                        "regex": "^(\\*sei[td])|(sei[td]\\*)$",
                         "reply": "seidseit.de",
                         "flag": "i"
                     },
                     {
-                        "regex": "^\\*das[s]?$",
+                        "regex": "^(\\*das[s]?)|(das[s]?\\*)$",
                         "reply": "das-dass.de",
                         "flag": "i"
                     },
