@@ -3,4 +3,4 @@ exports.process = function(bot, msg){
     if(msg.chat.id == bot.config.modules.forwarder.forwardTo && msg.reply_to_message && msg.text){
         bot.sendMessage(msg.reply_to_message.forward_from.id, msg.text);
     }
-}
+};

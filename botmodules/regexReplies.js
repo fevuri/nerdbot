@@ -6,7 +6,7 @@ exports.init = function(bot, done) {
 		reply.regexObj = new RegExp(reply.regex, reply.flag);
 		done();
 	}, done);
-}
+};
 
 // Check if a message matches a regex and reply if it does
 exports.process = function(bot, message){

@@ -10,7 +10,7 @@ exports.process = function(bot, message){
 		this.lastText = {
 			text: "",
 			count: 0,
-		}
+		};
 	}
 	var lastMessagesInChat = noSpam.lastMessages[message.chat.id]; // helper variable
 
@@ -44,11 +44,11 @@ exports.process = function(bot, message){
 			}
 			return false;
 		}],
-		function(func, callback){callback(func())}, // mini function to call the functions of the array and pass their result to callback
+		function(func, callback){callback(func());}, // mini function to call the functions of the array and pass their result to callback
 		function(reuslt){
 			// reply if one of the spam filters are true
 			if(reuslt){
-				if(noSpam.publicReply) bot.reply(message, noSpam.reply)
+				if(noSpam.publicReply) bot.reply(message, noSpam.reply);
 				else bot.sendMessage(message.from.id, noSpam.reply);
 			}
 		}
