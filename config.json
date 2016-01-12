@@ -34,7 +34,14 @@
 			},
 			"forwarder": {
 				"forwardTo": 15907933
-			}
+			},
+			"cronMessage": [
+				{
+					"cron": "15 37 13 * * *",
+					"chat_id": -186410,
+					"text": "1337!"
+				}
+			]
 		}
 	}, {
 		"username": "nospambot",
