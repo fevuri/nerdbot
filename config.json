@@ -19,6 +19,13 @@
 				"regex": "^Kann ich",
 				"reply": "Vermutlich KANNST du",
 				"flag": "i"
+			}, {
+				"regex": "durchgehend online",
+				"reply": {
+					"audio": "BQADBAADBAADEnR2BaV6YLUMmWFVAg",
+					"title": "why is this even needed??? #telegram"
+				},
+				"flag": "i"
 			}],
 			"noSpam": {
 				"sameTextLimit": 2,
