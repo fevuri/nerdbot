@@ -47,12 +47,6 @@
 		"username": "nospambot",
 		"discardUnreadMessages": true,
 		"modules": {
-			"noSpam": {
-				"minuteLimit": 3,
-				"sameTextLimit": 1,
-				"publicReply": false,
-				"reply": "Kein Spam, bitte"
-			},
 			"forwarder": {
 				"forwardTo": 15907933
 			}
