@@ -44,14 +44,6 @@
 			]
 		}
 	}, {
-		"username": "nospambot",
-		"discardUnreadMessages": true,
-		"modules": {
-			"forwarder": {
-				"forwardTo": 15907933
-			}
-		}
-	}, {
 		"username": "jsonmessagebot",
 		"discardUnreadMessages": true,
 		"modules": {
