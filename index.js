@@ -5,9 +5,17 @@ var fs = require('fs');
 var path = require('path');
 
 var telegram = require('./lib/telegram.js');
+var webhook = require('./lib/webhook.js');
 
 var apikeys = require('./apikeys.json');
 var config = require('./config.json');
+
+
+//Webhooks
+if(fs.existsSync("./webhook.json")){
+	webhook.setup(require("./webhook.json"));
+}
+
 
 // Load all existing botmodules
 var botmodules = {};
@@ -24,7 +32,7 @@ fs.readdirSync(path.resolve(__dirname, 'botmodules')).forEach(function(modulefil
 
 // Start the different Bots
 async.each(config.bots, function(botConfig){
-	new telegram(apikeys[botConfig.username], botConfig)
+	new telegram(apikeys[botConfig.username], botConfig, webhook)
 	// set the on loaded function to initialize the botmodules
 	.on('loaded', function(){
 		var self = this;
