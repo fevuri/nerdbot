@@ -26,6 +26,13 @@
 					"title": "why is this even needed??? #telegram"
 				},
 				"flag": "i"
+			}, {
+				"regex": "final(e[rn]?)? countdown[s]?",
+				"reply": {
+					"audio": "BQADBAADBwADEnR2BSdDef1BdisQAg",
+					"title": "-"
+				},
+				"flag": "i"
 			}],
 			"noSpam": {
 				"sameTextLimit": 2,
