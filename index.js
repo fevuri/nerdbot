@@ -12,7 +12,7 @@ var config = require('./config.json');
 
 
 //Webhooks
-if(fs.existsSync("./webhook.json")){
+if(fs.existsSync(path.resolve(__dirname, "webhook.json"))){
 	webhook.setup(require("./webhook.json"));
 }
 
