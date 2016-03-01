@@ -1,21 +1,55 @@
-require('console-stamp')(console, 'yyyy-mm-dd HH:MM:ss.l');
+import * as asc from 'async'
+import * as fs from 'fs'
+import * as path from 'path'
+import * as os from 'os'
+import * as extjs from 'external-ip'
+import * as tg from './lib/telegram.js'
+import * as wh from './lib/webhook.js'
 
-var async = require('async');
-var fs = require('fs');
-var path = require('path');
+export default class Bot {
+	contructor(cfg) {
+		this.cfgr(cfg)
+	})
 
-var telegram = require('./lib/telegram.js');
-var webhook = require('./lib/webhook.js');
+	cfgr(cfg) {
+		asc.waterfall([
+			(cb)=> {
+				const cfgp = Object.assign(Object.seal({
+					host = null,
+					port = 8443,
+				}), cfg);
 
-var apikeys = require('./apikeys.json');
-var config = require('./config.json');
+				if (Object.is(null, cfg.host) {
+					const oshost = os.hostname();
+
+					if (oshost && 'localhost' !== oshost) {
+						cb(null, Object.assign())
+					} else {
+						extjs()((err, host)=> {
+							if (err) throw err
+
+							cb(null, Object.assign(cfgp, {host}))
+						})
+					}
+				} else {
+					cb(null, cfgp);
+				}
+			},
+		 	(cfgp, cb)=> {
+				Object.assign(this, cfgp, {
+					addr: url.format(Object.assign({
+						protocol: 'https',
+					}, cfgp));
+				});
 
 
+			},
+		]);
+	}
 //Webhooks
-if(fs.existsSync(path.resolve(__dirname, "webhook.json"))){
+if (fs.existsSync(path.resolve(__dirname, "webhook.json"))){
 	webhook.setup(require("./webhook.json"));
 }
-
 
 // Load all existing botmodules
 var botmodules = {};
@@ -61,3 +95,4 @@ async.each(config.bots, function(botConfig){
 		});
 	});
 });
+}
