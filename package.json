@@ -1,30 +1,27 @@
 {
-  "name": "NerdBot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "tgbot",
+  "version": "0.0.0",
+  "description": "Telegram Bot API",
+  "author": [
+    "Te Standby <testandby@gmail.com>",
+    "Linus Weipert <linusweipert@gmail.com>",
+    "Bernhard Kralofsky <berni98k@gmail.com>"
+  ],
+  "license": "LGPLv3",
+  "private": true,
+
+  "main": "lib/index.js",
+  "repository": "fevuri/tgbot",
   "dependencies": {
-    "async": "^1.2.1",
-    "base64url": "^1.0.6",
-    "body-parser": "^1.15.0",
-    "console-stamp": "^0.1.6",
-    "cron": "^1.1.0",
-    "express": "^4.13.4",
-    "merge": "^1.2.0",
-    "request": "^2.58.0"
+    "async": "~1.2.1",
+    "base64url": "~1.0.6",
+    "body-parser": "~1.15.0",
+    "console-stamp": "~0.1.6",
+    "cron": "~1.1.0",
+    "express": "~4.13.4",
+    "merge": "~1.2.0",
+    "request": "~2.58.0"
   },
   "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bernikr/NerdBot.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/bernikr/NerdBot/issues"
-  },
-  "homepage": "https://github.com/bernikr/NerdBot"
+  "preferGlobal": false
 }
