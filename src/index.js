@@ -52,7 +52,7 @@ export default class Bot {
 						}, cfgp)),
 					})
 
-					rsv()
+					rsv(this)
 				},
 			])
 		})
