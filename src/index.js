@@ -14,16 +14,17 @@ function getOsHost() {
 }
 
 export default class Bot {
-	contructor() {
-	})
+	static mk(cfg) {
+		return new Bot().cfgr(cfg)
+	}
 
 	cfgr(cfg) {
 		return new Prm((rsv, rjc)=> {
 			// TODO put addr getter in own module
 			new Prm((rsv2, rjc2)=> {
 				const cfgp = O.assign(O.seal({
-					host = null,
-					port = 8443,
+					host: null,
+					port: 8443,
 				}), cfg)
 
 				if (!O.is(null, cfg.host)) {
@@ -49,6 +50,55 @@ export default class Bot {
 			)
 		})
 	}
+}
+
+class Chat {
+
+}
+
+class Msg {
+	{
+		content: null, //required
+		notify: true,
+		kbd: null,
+	}
+}
+
+class Content {
+	{
+	}
+}
+
+class Txtd extends Content {
+	{
+		text: null, //required
+	}
+}
+
+class Text extends Txtd {
+	{
+		parser: null,
+	}
+}
+
+class Media extends Content {
+	{
+		media,
+	}
+}
+
+class Sticker extends Content {
+
+}
+
+class Contact extends Content {
+
+}
+
+class Loc extends Msg {
+
+}
+
 //Webhooks
 if (fs.existsSync(path.resolve(__dirname, "webhook.json"))){
 	webhook.setup(require("./webhook.json"));
