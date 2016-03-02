@@ -1,4 +1,3 @@
-import * as asc from 'async'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
@@ -7,6 +6,7 @@ import * as tg from './lib/telegram.js'
 import * as wh from './lib/webhook.js'
 
 const O = Object
+const Prm = Promise
 
 function getOsHost() {
 	const host = os.hostname()
@@ -14,47 +14,39 @@ function getOsHost() {
 }
 
 export default class Bot {
-	contructor(cfg) {
-		this.cfgr(cfg)
+	contructor() {
 	})
 
 	cfgr(cfg) {
-		return new Promise((rsv, rjc)=> {
-			// TODO rewrite as promise
+		return new Prm((rsv, rjc)=> {
 			// TODO put addr getter in own module
-			asc.waterfall([
-				(cb)=> {
-					const cfgp = O.assign(O.seal({
-						host = null,
-						port = 8443,
-					}), cfg)
+			new Prm((rsv2, rjc2)=> {
+				const cfgp = O.assign(O.seal({
+					host = null,
+					port = 8443,
+				}), cfg)
 
-					if (O.is(null, cfg.host)) {
-						let host = getOsHost()
+				if (!O.is(null, cfg.host)) {
+					rsv2(cfgp)
+				} else {
+					const osHost = getOsHost()
 
-						if (host) {
-							cb(null, host)
-						} else {
-							extjs()((err, host)=> {
-								err && rjc(err)
-
-								cb(null, O.assign(cfgp, {host}))
-							})
-						}
-					} else {
-						cb(null, cfgp)
-					}
-				},
-				(cfgp, cb)=> {
-					O.assign(this, cfgp, {
-						addr: url.format(O.assign({
-							protocol: 'https',
-						}, cfgp)),
-					})
-
-					rsv(this)
-				},
-			])
+					(osHost ? Prm.resolve(osHost) : new Prm((rsv3, rjc3)=>
+						extjs()((err, extHost)=>
+							// intended that it's `rjc`, not `rjc3`
+							err ? rjc(err) : rsv3(extHost)
+						)
+					)).then((host)=>
+						rsv2(O.assign(cfgp, {host}))
+					)
+				}
+			}).then((cfgp)=>
+				rsv(O.assign(this, cfgp, {
+					addr: url.format(O.assign({
+						protocol: 'https',
+					}, cfgp)),
+				}))
+			)
 		})
 	}
 //Webhooks
