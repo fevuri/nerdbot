@@ -6,45 +6,56 @@ import * as extjs from 'external-ip'
 import * as tg from './lib/telegram.js'
 import * as wh from './lib/webhook.js'
 
+const O = Object
+
+function getOsHost() {
+	const host = os.hostname()
+	return 'localhost' !== host && host
+}
+
 export default class Bot {
 	contructor(cfg) {
 		this.cfgr(cfg)
 	})
 
 	cfgr(cfg) {
-		asc.waterfall([
-			(cb)=> {
-				const cfgp = Object.assign(Object.seal({
-					host = null,
-					port = 8443,
-				}), cfg);
+		return new Promise((rsv, rjc)=> {
+			// TODO rewrite as promise
+			// TODO put addr getter in own module
+			asc.waterfall([
+				(cb)=> {
+					const cfgp = O.assign(O.seal({
+						host = null,
+						port = 8443,
+					}), cfg)
 
-				if (Object.is(null, cfg.host) {
-					const oshost = os.hostname();
+					if (O.is(null, cfg.host)) {
+						let host = getOsHost()
 
-					if (oshost && 'localhost' !== oshost) {
-						cb(null, Object.assign())
+						if (host) {
+							cb(null, host)
+						} else {
+							extjs()((err, host)=> {
+								err && rjc(err)
+
+								cb(null, O.assign(cfgp, {host}))
+							})
+						}
 					} else {
-						extjs()((err, host)=> {
-							if (err) throw err
-
-							cb(null, Object.assign(cfgp, {host}))
-						})
+						cb(null, cfgp)
 					}
-				} else {
-					cb(null, cfgp);
-				}
-			},
-		 	(cfgp, cb)=> {
-				Object.assign(this, cfgp, {
-					addr: url.format(Object.assign({
-						protocol: 'https',
-					}, cfgp));
-				});
+				},
+				(cfgp, cb)=> {
+					O.assign(this, cfgp, {
+						addr: url.format(O.assign({
+							protocol: 'https',
+						}, cfgp)),
+					})
 
-
-			},
-		]);
+					rsv()
+				},
+			])
+		})
 	}
 //Webhooks
 if (fs.existsSync(path.resolve(__dirname, "webhook.json"))){
