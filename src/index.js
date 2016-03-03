@@ -4,11 +4,15 @@ import * as Lz from 'lazy.js'
 import * as prmfy from 'promisify-node'
 import * as req from 'request'
 import mkAddr from './mkaddr.js'
+import Hk from './tghk.js'
 
 const O = Object
 const Prm = Promise
 
+//TODO implement EventEmitter
 export default class Bot {
+	//TODO show method visability using _-prefix
+
 	static mk(...args) {
 		return new Bot().cfgr(...args)
 	}
@@ -45,6 +49,7 @@ export default class Bot {
 
 	genPathN(...path) {
 		return [
+			'',
 			'bot' + this.token,
 		].concat(path).join('/')
 	}
@@ -86,6 +91,7 @@ export default class Bot {
 	}
 
 	mkHk() {
+		//TODO make it more safe by not using the bot token but a crypt string
 		return this.req('setWebhook', {
 			url: url.format(genHkAddrO),
 			certificate: this.cert, //is stream
@@ -94,6 +100,7 @@ export default class Bot {
 
 	onStart() {
 		this.runnin = true
+		this.hk = new Hk
 	}
 
 	stopHk() {
@@ -101,7 +108,10 @@ export default class Bot {
 	}
 
 	onStop() {
+		//TODO move to tghk
 		this.runnin = false
+		//TODO shut down express
+		delete this.hk
 	}
 }
 
