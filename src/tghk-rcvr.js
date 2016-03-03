@@ -11,7 +11,7 @@ export default class HkRcvr extends EvEmtr {
   constructor({
     bot
   }) {
-    Object.assign(this, {
+    O.assign(this, {
       app: express()
       .use(bparser.json({strict: true}))
       .post(this.bot.getPathN(':id'), (req, res)=> {

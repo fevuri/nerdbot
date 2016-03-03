@@ -11,8 +11,8 @@ export const statez = {
 }
 
 export default class HkReqr {
-  constructor() {
-
+  constructor({bot}) {
+    O.assign(this, {bot})
   }
 
   start() {
