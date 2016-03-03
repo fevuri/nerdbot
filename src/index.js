@@ -6,6 +6,7 @@ import * as prmfy from 'promisify-node'
 import * as req from 'request'
 import mkAddr from './mkaddr.js'
 import HkRcvr from './tghk-rcvr.js'
+import genCfg from './tgcfg.js'
 
 const O = Object
 const Prm = Promise
@@ -22,7 +23,12 @@ export default class Bot {
   }
 
   cfgr(cfg, start = true) {
+		return new Prm((rsv)=> genCfg(cfg).then((cfgp)=> {
+	    O.assign(this, cfgp)
 
+	    if (start) this.mkHook();
+	    rsv(this)
+	  }))
   }
 
   getPathN(...path) {
