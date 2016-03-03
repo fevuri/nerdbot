@@ -18,13 +18,12 @@ export default class Bot {
 			'host',
 			'port',
 			'key',
-			'cert',
 			'ssl'
 		]
 
 		return new Prm((rsv, rjc)=> {
-			// TODO put addr getter in own module
 			new Prm((rsv2)=> {
+				//TODO allow cert to be a string
 				const cfgp = Lz(cfg).pick(prmPz).map(Prm.resolve).defaults(cfg).defaults({
 					host: null,
 					port: 8443,
@@ -36,7 +35,9 @@ export default class Bot {
 					mkAddr().then((host)=> rsv2(O.assign(cfgp, {host})))
 				}
 			}).then((cfgp)=>
-				rsv(O.assign(this, cfgp))
+				O.assign(this, cfgp)
+
+				rsv(this)
 			)
 		})
 	}
@@ -62,7 +63,8 @@ export default class Bot {
 		}
 	}
 
-	req(meth, paramz) {
+	// TODO externalize
+	req(meth, paramz = {}) {
 		return new Prm((rsv, rjc)=> req.post({
 			url: this.genMethAddrO(meth),
 			json: paramz,
@@ -74,6 +76,8 @@ export default class Bot {
 			try {
 					bodyO = JSON.parse(body)
 			} catch (err2) {rjc(err2)}
+
+			// externalize till here
 			if (!bodyO.ok) return rjc(bodyO)
 
 			rsv(bodyO)
@@ -81,10 +85,14 @@ export default class Bot {
 	}
 
 	mkHk() {
-		this.req('setWebhook', {
+		return this.req('setWebhook', {
 			url: url.format(genHkAddrO),
-			certificate: this.cert,
+			certificate: this.cert, //is stream
 		})
+	}
+
+	stopHk() {
+		return this.req('setWebhook')
 	}
 }
 
