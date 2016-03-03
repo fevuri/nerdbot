@@ -1,5 +1,6 @@
 //TODO add express etc. to dependencies
 import * as EvEmtr from 'events'
+import * as https from 'https'
 import * as bparser from 'body-parser'
 import * as express from 'express'
 
@@ -24,7 +25,7 @@ export default class HkRcvr extends EvEmtr {
 
   start() {
     //TODO use ssl
-    this.server = this.app.listen(this.bot.port)
+    https.createServer(this.bot.ssl, this.app).listen(this.bot.port)
     //TODO use statez
     this.state = true
   }
