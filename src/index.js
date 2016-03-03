@@ -1,21 +1,13 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import * as os from 'os'
-import * as extjs from 'external-ip'
 import * as Lz from 'lazy.js'
 import * as prmfy from 'promisify-node'
-import * as oReq from 'request'
+import * as req from 'request'
 import * as tg from './lib/telegram.js'
 import * as wh from './lib/webhook.js'
 
 const O = Object
 const Prm = Promise
-const req = prmfy(oReq)
-
-function getOsHost() {
-	const host = os.hostname()
-	return 'localhost' !== host && host
-}
 
 export default class Bot {
 	static mk(cfg) {
@@ -33,25 +25,16 @@ export default class Bot {
 
 		return new Prm((rsv, rjc)=> {
 			// TODO put addr getter in own module
-			new Prm((rsv2, rjc2)=> {
+			new Prm((rsv2)=> {
 				const cfgp = Lz(cfg).pick(prmPz).map(Prm.resolve).defaults(cfg).defaults({
 					host: null,
 					port: 8443,
 				})
 
-				if (!O.is(null, cfg.host)) {
+				if (null !== cfg.host) {
 					rsv2(cfgp)
 				} else {
-					const osHost = getOsHost()
 
-					osHost ? Prm.resolve(osHost) : new Prm((rsv3, rjc3)=>
-						extjs()((err, extHost)=>
-							// intended that it's `rjc`, not `rjc3`
-							err ? rjc(err) : rsv3(extHost)
-						)
-					)).then((host)=>
-						rsv2(O.assign(cfgp, {host}))
-					)
 				}
 			}).then((cfgp)=>
 				rsv(O.assign(this, cfgp))
@@ -59,21 +42,49 @@ export default class Bot {
 		})
 	}
 
-	getHkAddr() {
-		return url.format(Lz(this).pick(['host', 'port']).assign({
+	genPathN(...path) {
+		return [
+			'bot' + this.token,
+		].concat(path).join('/')
+	}
+
+	genHkAddrO() {
+		return Lz(this).pick(['host', 'port']).assign({
 			protocol: 'https',
-			pathname: 'bot' + this.token,
+			pathname: this.genPathN(),
+		}
+	}
+
+	genMethAddrO(meth) {
+		return {
+			protocol: 'https',
+			host: 'api.telegram.org',
+			pathname: this.genPathN(meth),
+		}
+	}
+
+	req(meth, paramz) {
+		return new Prm((rsv, rjc)=> req.post({
+			url: this.genMethAddrO(meth),
+			json: paramz,
+			gzip: true,
+		}, (err, res, body)=> {
+			if (err || 200 !== res.statusCode) return rjc(err || res)
+
+			let bodyO
+			try {
+					bodyO = JSON.parse(body)
+			} catch (err2) {rjc(err2)}
+			if (!bodyO.ok) return rjc(bodyO)
+
+			rsv(bodyO)
 		}))
 	}
 
-	getMethAddr(meth) {
-		return url.format({
-			protocol: 'https',
-			host: 'api.telegram.org',
-			pathname:  [
-				'bot' + this.token,
-				meth,
-			].join('/'),
+	mkHk() {
+		this.req('setWebhook', {
+			url: url.format(genHkAddrO),
+			certificate: this.cert,
 		})
 	}
 }
