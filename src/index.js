@@ -1,16 +1,17 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import * as EvEmtr from 'events'
 import * as Lz from 'lazy.js'
 import * as prmfy from 'promisify-node'
 import * as req from 'request'
 import mkAddr from './mkaddr.js'
-import Hk from './tghk.js'
+import HkRcvr from './tghk-rcvr.js'
 
 const O = Object
 const Prm = Promise
 
 //TODO implement EventEmitter
-export default class Bot {
+export default class Bot extends EvEmtr {
 	//TODO show method visability using _-prefix
 
 	static mk(...args) {
@@ -41,7 +42,7 @@ export default class Bot {
 			}).then((cfgp)=>
 				O.assign(this, cfgp)
 
-				if (start) mkHook();
+				if (start) this.mkHook();
 				rsv(this)
 			)
 		})
