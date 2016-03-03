@@ -3,8 +3,7 @@ import * as path from 'path'
 import * as Lz from 'lazy.js'
 import * as prmfy from 'promisify-node'
 import * as req from 'request'
-import * as tg from './lib/telegram.js'
-import * as wh from './lib/webhook.js'
+import mkAddr from './mkaddr.js'
 
 const O = Object
 const Prm = Promise
@@ -34,7 +33,7 @@ export default class Bot {
 				if (null !== cfg.host) {
 					rsv2(cfgp)
 				} else {
-
+					mkAddr().then((host)=> rsv2(O.assign(cfgp, {host})))
 				}
 			}).then((cfgp)=>
 				rsv(O.assign(this, cfgp))

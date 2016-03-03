@@ -1,5 +1,5 @@
 import * as os from 'os'
-import * as extjs from 'external-ip'
+import * as ext from 'external-ip'
 
 const O = Object
 const Prm = Promise
@@ -7,14 +7,13 @@ const Prm = Promise
 export default function mkAddr() {
   const osHost = getOsHost()
 
-  //TODO return prm
-  osHost ? Prm.resolve(osHost) : new Prm((rsv)=>
-    extjs()((err, extHost)=>
+  return osHost ? Prm.resolve(osHost) : new Prm((rsv)=>
+    ext()((err, extHost)=>
       err ? rjc(err) : rsv(extHost)
     )
-  )).then((host)=>
-    rsv2(O.assign(cfgp, {host}))
-  )
+  ))
+
+  //TODO reintegrate to index.js
 }
 
 export function getOs() {
