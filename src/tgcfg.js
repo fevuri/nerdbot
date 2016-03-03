@@ -1,5 +1,3 @@
-//TODO structure/rewrite
-
 const prmPz = [
   'host',
   'port',
@@ -8,8 +6,9 @@ const prmPz = [
   'ssl',
 ]
 
+//TODO rewrite as class
 export default function genCfg(cfg) {
-  const cfgp = Lz(cfg).pick(prmPz).map(Prm.resolve)
+  const cfgp = Lz(cfg).pick(prmPz).map(Prm.resolve.then())
   .defaults(cfg).defaults({
     host: null,
     port: 8443,

@@ -7,6 +7,7 @@ import * as req from 'request'
 import mkAddr from './mkaddr.js'
 import HkRcvr from './tghk-rcvr.js'
 import genCfg from './tgcfg.js'
+//import from './tgmsg.js' //TODO integrate msgs
 
 const O = Object
 const Prm = Promise
