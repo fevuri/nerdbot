@@ -90,30 +90,6 @@ export default class Bot extends EvEmtr {
 			rsv(bodyO)
 		}))
 	}
-
-	mkHk() {
-		//TODO make it more safe by not using the bot token but a crypt string
-		return this.req('setWebhook', {
-			url: url.format(genHkAddrO),
-			certificate: this.cert, //is stream
-		}).then(this.onStart.bind(this))
-	}
-
-	onStart() {
-		this.runnin = true
-		this.hk = new Hk
-	}
-
-	stopHk() {
-		return this.req('setWebhook').then(this.onStop.bind(this))
-	}
-
-	onStop() {
-		//TODO move to tghk
-		this.runnin = false
-		//TODO shut down express
-		delete this.hk
-	}
 }
 
 //TODO put in own module(s)

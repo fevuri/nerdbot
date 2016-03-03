@@ -15,16 +15,20 @@ export default class HkRcvr extends EvEmtr {
 
   start() {
     //TODO read express docu and maybe rewrite
+    //TODO move to constructor
     this.app.use(bparser.json({strict: true}))
     this.app.post(this.bot.getPathN(':id'), (req, res)=> {
       this.emit('msg')
       res.sendStatus(200)
     })
+    //TODO listen
 
-    this.runnin = true
+    //TODO use statez
+    this.state = true
   }
 
   stop() {
-    this.runnin = false
+    this.server.close()
+    this.state = false
   }
 }
