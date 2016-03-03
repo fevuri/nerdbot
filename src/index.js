@@ -29,7 +29,9 @@ export default class Bot extends EvEmtr {
 		return new Prm((rsv, rjc)=> {
 			new Prm((rsv2)=> {
 				//TODO allow cert to be a string
-				const cfgp = Lz(cfg).pick(prmPz).map(Prm.resolve).defaults(cfg).defaults({
+				//TODO move out of Prm body by using .reject
+				const cfgp = Lz(cfg).pick(prmPz).map(Prm.resolve)
+				.defaults(cfg).defaults({
 					host: null,
 					port: 8443,
 				})

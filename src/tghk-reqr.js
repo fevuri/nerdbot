@@ -13,24 +13,26 @@ export default class HkReqr {
   }
 
   start() {
+    if (statez.STOPPED !== this.state) return Promise.reject(this.state)
     this.state = statez.STARTN
 
 		//TODO make it more safe by not using the bot token but a crypt string
-		return this.req('setWebhook', {
+		return this.bot.req('setWebhook', {
 			url: url.format(genHkAddrO),
 			certificate: this.cert, //is stream
-		}).then(this.onStart.bind(this))
+		}).then({
+
+    }
 
     //TODO move to hook
     this.state = statez.STARTED
   }
 
   stop() {
+    if (statez.STARTED !== this.state) return Promise.reject(this.state)
     this.state = statez.STOPPN
 
-	  stopHk() {
-		  return this.req('setWebhook').then(this.onStop.bind(this))
-	  }
+	  return this.bot.req('setWebhook').then(this.onStop.bind(this))
 
     //TODO move to hook
     this.state = statez.STOPPED
