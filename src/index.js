@@ -9,11 +9,11 @@ const O = Object
 const Prm = Promise
 
 export default class Bot {
-	static mk(cfg) {
-		return new Bot().cfgr(cfg)
+	static mk(...args) {
+		return new Bot().cfgr(...args)
 	}
 
-	cfgr(cfg) {
+	cfgr(cfg, start = true) {
 		const prmPz = [
 			'host',
 			'port',
@@ -37,6 +37,7 @@ export default class Bot {
 			}).then((cfgp)=>
 				O.assign(this, cfgp)
 
+				if (start) mkHook();
 				rsv(this)
 			)
 		})
@@ -88,11 +89,19 @@ export default class Bot {
 		return this.req('setWebhook', {
 			url: url.format(genHkAddrO),
 			certificate: this.cert, //is stream
-		})
+		}).then(this.onStart.bind(this))
+	}
+
+	onStart() {
+		this.runnin = true
 	}
 
 	stopHk() {
-		return this.req('setWebhook')
+		return this.req('setWebhook').then(this.onStop.bind(this))
+	}
+
+	onStop() {
+		this.runnin = false
 	}
 }
 
