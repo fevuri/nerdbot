@@ -10,8 +10,7 @@ import HkRcvr from './tghk-rcvr.js'
 const O = Object
 const Prm = Promise
 
-//TODO implement EventEmitter
-export default class Bot extends EvEmtr {
+export default class Bot {
 	//TODO show method visability using _-prefix
 
 	static mk(...args) {
@@ -25,16 +24,17 @@ export default class Bot extends EvEmtr {
 			'key',
 			'ssl'
 		]
+		const cfgp = Lz(cfg).pick(prmPz).map(Prm.resolve)
+		.defaults(cfg).defaults({
+			host: null,
+			port: 8443,
+		}) //TODO handle host, port etc. as promise, rewrite to do so
+
+		if (null !== cfgp.host) return Prm.resolve(this)
 
 		return new Prm((rsv, rjc)=> {
 			new Prm((rsv2)=> {
 				//TODO allow cert to be a string
-				//TODO move out of Prm body by using .reject
-				const cfgp = Lz(cfg).pick(prmPz).map(Prm.resolve)
-				.defaults(cfg).defaults({
-					host: null,
-					port: 8443,
-				})
 
 				if (null !== cfg.host) {
 					rsv2(cfgp)
@@ -50,32 +50,31 @@ export default class Bot extends EvEmtr {
 		})
 	}
 
-	genPathN(...path) {
+	getPathN(...path) {
 		return [
 			'',
 			'bot' + this.token,
 		].concat(path).join('/')
 	}
 
-	genHkAddrO() {
+	getHkAddrO() {
 		return Lz(this).pick(['host', 'port']).assign({
 			protocol: 'https',
-			pathname: this.genPathN(),
+			pathname: this.getPathN(),
 		}
 	}
 
-	genMethAddrO(meth) {
+	getMethAddrO(meth) {
 		return {
 			protocol: 'https',
 			host: 'api.telegram.org',
-			pathname: this.genPathN(meth),
+			pathname: this.getPathN(meth),
 		}
 	}
 
-	// TODO externalize
 	req(meth, paramz = {}) {
 		return new Prm((rsv, rjc)=> req.post({
-			url: this.genMethAddrO(meth),
+			url: this.getMethAddrO(meth),
 			json: paramz,
 			gzip: true,
 		}, (err, res, body)=> {
@@ -85,9 +84,7 @@ export default class Bot extends EvEmtr {
 			try {
 					bodyO = JSON.parse(body)
 			} catch (err2) {rjc(err2)}
-
-			// externalize till here
-			if (!bodyO.ok) return rjc(bodyO)
+			if (!body0 || !bodyO.ok) return rjc(bodyO)
 
 			rsv(bodyO)
 		}))

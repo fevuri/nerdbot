@@ -3,6 +3,9 @@ import * as EvEmtr from 'events'
 import * as bparser from 'body-parser'
 import * as express from 'express'
 
+const O = Object
+const Prm = Promise
+
 export default class HkRcvr extends EvEmtr {
   constructor({
     bot
