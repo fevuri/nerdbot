@@ -23,6 +23,7 @@ export default class HkRcvr extends EvEmtr {
   }
 
   start() {
+    //TODO use ssl
     this.server = this.app.listen(this.bot.port)
     //TODO use statez
     this.state = true
