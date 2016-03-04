@@ -1,28 +1,45 @@
 //TODO migrate to bacon.js (or similar library)
+import * as EvEmtr from 'events'
+import * as Lz from 'lazy.js'
+
+const O = Object
+const Prm = Promise
 
 //TODO make this class also usable for other purposes -> move following stuff to index.js
-const prmPz = [
-  'host',
-  'port',
-  'key',
-  'cert',
-  'ssl',
-]
-const dflts = [
+//TODO test accept's type asserts
+const accept = Lz({
+  host: [Prm, String],
+  port: [Prm, Number],
+  key: [Prm, String],
+  cert: [Prm, String, /*Stream*/], //TODO Find out exact Stream type
+  ssl: [Prm: O],
+})
+const dflts = Lz({
   port: 8443,
-]
+})
+const prmKeyz = accept.filter((val)=> val.includes(Prm)).keys() //TODO test if .filter() outputs OLikeSeq
 
 function func2Prm(func) {
   return new Prm((rsv, rjc)=> func((err, data)=> err ? rjc(err) : rsv(data)))
 }
 
 export default class Cfg extends EvEmtr {
-  constructor(cfg) {
-    const prmCfg = Lz(cfg).pick(prmPz)
+  constructor({
+    iCfg
+  }) {
+    O.assign(this, {iCfg})
+    this.compute()
+  }
+
+  //TODO Put in different funcs
+  compute() {
+    const cfg = Lz(this.iCfg)
+    const prmCfg = cfg.pick(prmKeyz)
     const funcCfg = prmCfg.pick(prmCfg.functions())
     this.prmz = funcCfg.map(func2Prm).defaults(prmCfg)
     //TODO Don't fire when everything is done but tigger different events specifically
     //TODO Save cfg data to instances of this class
+    //TODO Do i rly need values() or are OLikeSeqs iterable?
     Prm.all(this.prmz.values()).then(()=> this.emit('done', this.prmz))
   }
 }

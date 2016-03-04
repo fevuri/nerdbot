@@ -22,7 +22,7 @@ export default class HkReqr {
     //TODO make it more safe by not using the bot token but a crypt string
     return this.bot.req('setWebhook', {
       url: url.format(this.bot.genHkAddrO()),
-      certificate: this.cert, //is stream
+      certificate: this.cert, //TODO is stream
     }).then(()=> {
       this.state = statez.STARTED
     })
