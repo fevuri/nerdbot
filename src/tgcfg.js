@@ -6,7 +6,6 @@ const O = Object
 const Prm = Promise
 
 //TODO make this class also usable for other purposes -> move following stuff to index.js
-//TODO test accept's type asserts
 const accept = Lz({
   host: [Prm, String],
   port: [Prm, Number],
@@ -14,7 +13,7 @@ const accept = Lz({
   cert: [Prm, String, /*Stream*/], //TODO Find out exact Stream type
   ssl: [Prm: O],
 })
-const dflts = Lz({
+const dfltz = Lz({
   port: 8443,
 })
 const prmKeyz = accept.filter((val)=> val.includes(Prm)).keys() //TODO test if .filter() outputs OLikeSeq
@@ -25,27 +24,44 @@ function func2Prm(func) {
 
 export default class Cfg extends EvEmtr {
   constructor({
-    iCfg
+    cfg
   }) {
-    O.assign(this, {iCfg})
-    this.compute()
+    O.assign(this, {i: Lz(cfg)})
+  }
+
+  //TODO implement getter cache
+  get prmz() {
+    const prmCfg = this.i.pick(prmKeyz)
+    const funcCfg = prmCfg.pick(prmCfg.functions())
+    return funcCfg.map(func2Prm).defaults(prmCfg)
+  }
+
+  get parsedz() {
+    //TODO test accept's type asserts
+    return this.i.pick(accept.keys())
+  }
+
+  get dfltedz() {
+    return this.parsedz.defaults(dfltz)
+  }
+
+  get o() {
+    return this.rsvedz.defaults(this.simplz)
   }
 
   //TODO Put in different funcs
-  compute() {
-    const cfg = Lz(this.iCfg)
-    const prmCfg = cfg.pick(prmKeyz)
-    const funcCfg = prmCfg.pick(prmCfg.functions())
-    this.prmz = funcCfg.map(func2Prm).defaults(prmCfg)
+  mk() {
     //TODO Don't fire when everything is done but tigger different events specifically
-    //TODO Save cfg data to instances of this class
-    //TODO Do i rly need values() or are OLikeSeqs iterable?
-    Prm.all(this.prmz.values()).then(()=> this.emit('done', this.prmz))
+    //TODO Find out: Do i rly need values() or are OLikeSeqs iterable
+    //TODO Err handling
+    Prm.all(this.prmz.values()).then((vals)=> this.emit('done', O.assign(this, {
+      rsvedz: Lz(this.prmz.keys().zip(vals).toObject()) //TODO cleaner way? maybe in bacon
+    })))
   }
 }
 
-//TODO rewrite as class
-export default function genCfg(cfg) {
+//TODO check if it does the same as the class and rm then
+function genCfg(cfg) {
   const cfgp = prmCfg
   .pick(prmCfg.functions())
   .map(func2Prm)

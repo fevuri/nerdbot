@@ -26,8 +26,8 @@ export default class Bot extends EvEmtr {
     return new Bot().cfgr(...argz)
   }
 
-  cfgr(iCfg, start = true) {
-		return new Prm((rsv)=> new Cfg({iCfg}).on('done', (cfgp)=> {
+  cfgr(cfg, start = true) {
+		return new Prm((rsv)=> new Cfg({cfg}).on('done', (cfgp)=> {
 			//TODO err handling (rjc)
 	    O.assign(this, cfgp)
 
