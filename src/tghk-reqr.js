@@ -25,7 +25,7 @@ export default class HkReqr {
       certificate: this.cert, //is stream
     }).then(()=> {
       this.state = statez.STARTED
-    }
+    })
   }
 
   stop() {

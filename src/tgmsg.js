@@ -1,4 +1,5 @@
 //TODO put in own module(s)
+/*
 class Chat {
 
 }
@@ -45,4 +46,4 @@ class Contact extends Content {
 
 class Loc extends Msg {
 
-}
+}*/

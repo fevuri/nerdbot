@@ -11,7 +11,7 @@ export default function mkAddr() {
     ext()((err, extHost)=>
       err ? rjc(err) : rsv(extHost)
     )
-  ))
+  )
 
   //TODO reintegrate to index.js
 }

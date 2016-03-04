@@ -1,3 +1,5 @@
+//TODO add import to babelrc
+//TODO add babelrc to submodule
 import * as fs from 'fs'
 import * as path from 'path'
 import * as EvEmtr from 'events'
@@ -38,8 +40,8 @@ export default class Bot extends EvEmtr {
 
 		//TODO maybe move to cfgr
 		this.hook = {
-			reqr: new HkReqr(cfgBase)
-		 	rcvr: new HkRcvr(cfgBase)
+			reqr: new HkReqr(cfgBase),
+		 	rcvr: new HkRcvr(cfgBase),
 		}
 
 		Lz(this.hook).each((e)=> e.start()) //TODO add promise
