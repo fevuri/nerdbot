@@ -1,7 +1,7 @@
 {
   "name": "tgbot",
   "version": "0.0.0",
-  "description": "Telegram Bot API",
+  "description": "Telegram Bot API for Node.js — Modular and ES6 based",
   "author": [
     "Te Standby <testandby@gmail.com>",
     "Linus Weipert <linusweipert@gmail.com>"

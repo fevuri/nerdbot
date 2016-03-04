@@ -13,10 +13,10 @@ const O = Object
 const Prm = Promise
 
 const addrBase = {
-	protocol: 'https'
+	protocol: 'https',
 }
 
-export default class Bot {
+export default class Bot extends EvEmtr {
   //TODO show method visability using _-prefix
 
   static mk(...args) {
