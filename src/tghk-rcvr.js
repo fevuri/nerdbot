@@ -28,10 +28,12 @@ export default class HkRcvr extends EvEmtr {
     https.createServer(this.bot.ssl, this.app).listen(this.bot.port)
     //TODO use statez
     this.state = true
+    return Prm.resolve(this)
   }
 
   stop() {
     this.server.close()
     this.state = false
+    return Prm.resolve(this)
   }
 }

@@ -5,8 +5,9 @@ import * as Lz from 'lazy.js'
 import * as prmfy from 'promisify-node'
 import * as req from 'request'
 import mkAddr from './mkaddr.js'
-import HkRcvr from './tghk-rcvr.js'
 import genCfg from './tgcfg.js'
+import HkRcvr from './tghk-rcvr.js'
+import HkReqr from './tghk-reqr.js'
 //import from './tgmsg.js' //TODO integrate msgs
 
 const O = Object
@@ -27,10 +28,22 @@ export default class Bot extends EvEmtr {
 		return new Prm((rsv)=> genCfg(cfg).then((cfgp)=> {
 	    O.assign(this, cfgp)
 
-	    if (start) this.mkHook();
+	    if (start) this.mkHook(); //TODO maybe wait for mkHook.then
 	    rsv(this)
 	  }))
   }
+
+	mkHook() {
+		const cfgBase = {bot: this}
+
+		//TODO maybe move to cfgr
+		this.hook = {
+			reqr: new HkReqr(cfgBase)
+		 	rcvr: new HkRcvr(cfgBase)
+		}
+
+		Lz(this.hook).each((e)=> e.start()) //TODO add promise
+	}
 
   getPathN(...path) {
     return [
