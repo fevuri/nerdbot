@@ -22,8 +22,8 @@ const addrBase = {
 export default class Bot extends EvEmtr {
   //TODO show method visability using _-prefix
 
-  static mk(...args) {
-    return new Bot().cfgr(...args)
+  static mk(...argz) {
+    return new Bot().cfgr(...argz)
   }
 
   cfgr(cfg, start = true) {
@@ -77,6 +77,7 @@ export default class Bot extends EvEmtr {
 
       let bodyO
       try {
+					//TODO Inform about Lz's Json capabilities and maybe parse lazy
           bodyO = JSON.parse(body)
       } catch (err2) {rjc(err2)}
       if (!body0 || !bodyO.ok) return rjc(bodyO)
