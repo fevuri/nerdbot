@@ -1,3 +1,6 @@
+//TODO migrate to bacon.js (or similar library)
+
+//TODO make this class also usable for other purposes -> move following stuff to index.js
 const prmPz = [
   'host',
   'port',
@@ -5,21 +8,34 @@ const prmPz = [
   'cert',
   'ssl',
 ]
+const dflts = [
+  port: 8443,
+]
 
-//TODO externalize
 function func2Prm(func) {
   return new Prm((rsv, rjc)=> func((err, data)=> err ? rjc(err) : rsv(data)))
 }
 
+export default class Cfg extends EvEmtr {
+  constructor(cfg) {
+    const prmCfg = Lz(cfg).pick(prmPz)
+    const funcCfg = prmCfg.pick(prmCfg.functions())
+    this.prmz = funcCfg.map(func2Prm).defaults(prmCfg)
+    //TODO Don't fire when everything is done but tigger different events specifically
+    //TODO Save cfg data to instances of this class
+    Prm.all(this.prmz.values()).then(()=> this.emit('done', this.prmz))
+  }
+}
+
 //TODO rewrite as class
 export default function genCfg(cfg) {
-  const prmCfg = Lz(cfg).pick(prmPz)
   const cfgp = prmCfg
   .pick(prmCfg.functions())
   .map(func2Prm)
   .defaults(prmCfg)
-  .map(Prm.resolve.then())
-  .defaults(cfg).defaults({
+  .map()
+  .defaults(cfg)
+  .defaults({
     host: null,
     port: 8443,
   }) //TODO handle host, port etc. as promise, rewrite to do so

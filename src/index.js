@@ -7,7 +7,7 @@ import * as Lz from 'lazy.js'
 import * as prmfy from 'promisify-node'
 import * as req from 'request'
 import mkAddr from './mkaddr.js'
-import genCfg from './tgcfg.js'
+import Cfg from './tgcfg.js'
 import HkRcvr from './tghk-rcvr.js'
 import HkReqr from './tghk-reqr.js'
 //import from './tgmsg.js' //TODO integrate msgs
@@ -27,7 +27,8 @@ export default class Bot extends EvEmtr {
   }
 
   cfgr(cfg, start = true) {
-		return new Prm((rsv)=> genCfg(cfg).then((cfgp)=> {
+		return new Prm((rsv)=> new Cfg(cfg).on('done', (cfgp)=> {
+			//TODO err handling (rjc)
 	    O.assign(this, cfgp)
 
 	    if (start) this.mkHook(); //TODO maybe wait for mkHook.then
