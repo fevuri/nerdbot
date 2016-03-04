@@ -4,7 +4,4 @@ Telegram Bot API
 
 ## Usage
 
-  const bot = Bot.mk()
-  
-//TODO Add more usage
-//TODO Add event emitter docu
+See [@tgbot_example_bot](http://telegram.me/tgbot_example_bot)'s [repository](fevuri/tgbot-example)
