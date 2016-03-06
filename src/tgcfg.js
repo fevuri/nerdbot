@@ -23,10 +23,8 @@ function func2Prm(func) {
 }
 
 export default class Cfg extends EvEmtr {
-  constructor({
-    cfg
-  }) {
-    O.assign(this, {i: Lz(cfg)})
+  constructor(arg) {
+    O.assign(this, Lz(Lz(arg).pick(['dfltz', 'accept']).assign({i: arg.cfg}))
   }
 
   //TODO implement getter cache

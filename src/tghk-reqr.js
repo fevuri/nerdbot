@@ -1,14 +1,11 @@
+import * as Lz from 'lazy.js'
+import statez from './statez.js'
+
 const O = Object
 const Prm = Promise
 
 //TODO find better enum syntax / write wrapper module
 //TODO move to own module in order to be reused in rcvr
-export const statez = {
-  STARTN: Symbol(),
-  STARTED: Symbol(),
-  STOPPN: Symbol(),
-  STOPPED: Symbol(),
-}
 
 export default class HkReqr {
   constructor({bot}) {

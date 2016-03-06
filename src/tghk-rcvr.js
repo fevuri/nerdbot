@@ -3,11 +3,12 @@ import * as EvEmtr from 'events'
 import * as https from 'https'
 import * as bparser from 'body-parser'
 import * as express from 'express'
+import statez from './statez.js'
 
 const O = Object
 const Prm = Promise
 
-export default class HkRcvr extends EvEmtr {
+export default class HkRcvr {
   constructor({
     bot
   }) {
@@ -27,13 +28,13 @@ export default class HkRcvr extends EvEmtr {
     //TODO use ssl
     https.createServer(this.bot.ssl, this.app).listen(this.bot.port)
     //TODO use statez
-    this.state = true
+    this.state = statez.STARTED
     return Prm.resolve(this)
   }
 
   stop() {
     this.server.close()
-    this.state = false
+    this.state = statez.STOPPED
     return Prm.resolve(this)
   }
 }
