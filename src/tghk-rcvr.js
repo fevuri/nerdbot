@@ -25,9 +25,7 @@ export default class HkRcvr {
   }
 
   start() {
-    //TODO use ssl
     https.createServer(this.bot.ssl, this.app).listen(this.bot.port)
-    //TODO use statez
     this.state = statez.STARTED
     return Prm.resolve(this)
   }

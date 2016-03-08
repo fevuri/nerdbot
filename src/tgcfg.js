@@ -1,6 +1,7 @@
-//TODO migrate to bacon.js (or similar library)
+//TODO migrate to bacon.js or/and highland.js (or similar libraries)
 import * as EvEmtr from 'events'
 import * as Lz from 'lazy.js'
+import * as Hl from 'highland'
 
 const O = Object
 const Prm = Promise
@@ -10,8 +11,8 @@ const accept = Lz({
   host: [Prm, String],
   port: [Prm, Number],
   key: [Prm, String],
-  cert: [Prm, String, /*Stream*/], //TODO Find out exact Stream type
-  ssl: [Prm: O],
+  cert: [Prm, String],
+  ssl: [Prm, O],
 })
 const dfltz = Lz({
   port: 8443,
@@ -22,6 +23,11 @@ function func2Prm(func) {
   return new Prm((rsv, rjc)=> func((err, data)=> err ? rjc(err) : rsv(data)))
 }
 
+function strm2Prm(strm) {
+  return new Prm((rsv, rjc)=> Hl(strm).reduce1((l, r)=> l + r)).apply(rsv))
+  })
+}
+
 export default class Cfg extends EvEmtr {
   constructor(arg) {
     O.assign(this, Lz(Lz(arg).pick(['dfltz', 'accept']).assign({i: arg.cfg}))
@@ -30,8 +36,13 @@ export default class Cfg extends EvEmtr {
   //TODO implement getter cache
   get prmz() {
     const prmCfg = this.i.pick(prmKeyz)
+    const strmCfg = prmCfg.
     const funcCfg = prmCfg.pick(prmCfg.functions())
-    return funcCfg.map(func2Prm).defaults(prmCfg)
+
+    const strmCfgP = strmCfg.map(strm2Prm)
+    const funcCfgP = funcCfg.map(func2Prm)
+
+    return strmCfg.defaults(funcCfgP).defaults(prmCfg)
   }
 
   get parsedz() {

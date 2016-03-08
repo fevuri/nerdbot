@@ -1,4 +1,4 @@
-//TODO add import to babelrc
+//TODO babel: add plugin to make import work correctly
 //TODO add babelrc to submodule
 import * as fs from 'fs'
 import * as path from 'path'
@@ -12,6 +12,7 @@ import HkRcvr from './tghk-rcvr.js'
 import HkReqr from './tghk-reqr.js'
 //import from './tgmsg.js' //TODO integrate msgs
 
+//TODO externalize O, Prm
 const O = Object
 const Prm = Promise
 
